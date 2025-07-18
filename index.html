@@ -2,29 +2,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phrase Guessing Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial; text-align: center; }
+        input, button { margin: 10px; padding: 5px; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Phrase Guessing Game</h1>
-        
-        <input id="score-input" type="number" placeholder="Enter quiz score" />
-        <button id="start-game-button">Start Game</button>
-
-        <div id="guess-area">
-            <div>Guess the Phrase: <span id="masked-phrase">____</span></div>
-            <input id="guess-input" type="text" placeholder="Enter your guess" />
-            <button id="guess-button">Guess</button>
-        </div>
-
-        <div>Your Score: <span id="score">0</span></div>
-        <div id="message"></div>
-
-        <button id="reset-button">Reset Game</button>
+    <h1>Phrase Guessing Game</h1>
+    
+    <div>
+        <input id="score-input" type="number" placeholder="Enter max guesses">
+        <button onclick="startGame()">Start Game</button>
     </div>
 
-    <script src="script.js"></script>
+    <div>
+        Phrase: <span id="masked-phrase">______</span>
+    </div>
+
+    <div>
+        <input id="guess-input" type="text" placeholder="Enter your guess">
+        <button onclick="makeGuess()">Guess</button>
+    </div>
+
+    <div>
+        Guesses Left: <span id="guesses-left">0</span>
+    </div>
+
+    <div id="message"></div>
+
+    <button onclick="resetGame()">Reset Game</button>
+
+    <script>
+        // Game Variables
+        let phrases = [
+            "Teamwork makes the dream work",
+            "Coffee fuels creativity",
+            "Practice makes perfect"
+        ];
+        let currentPhrase = "";
+        let maxGuesses = 0;
+        let remainingGuesses = 0;
+        let guessedLetters = [];
+
+        // Start Game Function
+        function startGame() {
+            console.log("Start Game Clicked");
+            
+            // Get max guesses from input
+            maxGuesses = parseInt(document.getElementById('score-input').value);
+            
+            if (isNaN(maxGuesses) || maxGuesses <= 0) {
+                alert("Please enter a valid number of guesses!");
+                return;
+            }
+
+            // Reset game state
+            remainingGuesses = maxGuesses;
+            guessedLetters = [];
+
+            // Select random phrase
+            currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            
+            // Update display
+            document.getElementById('masked-phrase').innerText = maskPhrase(currentPhrase);
+            document.getElementById('guesses-left').innerText = remainingGuesses;
+            document.getElementById('message').innerText = "Game started! Guess a letter.";
+        }
+
+        // Mask Phrase Function
+        function maskPhrase(phrase) {
+            return phrase.replace(/[a-zA-Z]/g, "_");
+        }
+
+        // Make Guess Function
+        function makeGuess() {
+            console.log("Guess Button Clicked");
+            
+            // Get guess input
+            let guessInput = document.getElementById('guess-input');
+            let guess = guessInput.value.toLowerCase();
+            guessInput.value = ''; // Clear input
+
+            // Validate guess
+            if (guess.length !== 1) {
+                alert("Please enter a single letter!");
+                return;
+            }
+
+            // Check if letter already guessed
+            if (guessedLetters.includes(guess)) {
+                alert("You already guessed that letter!");
+                return;
+            }
+
+            guessedLetters.push(guess);
+
+            // Check if guess is in phrase
+            if (currentPhrase.toLowerCase().includes(guess)) {
+                // Correct guess
+                updateMaskedPhrase();
+                document.getElementById('message').innerText = "Correct guess!";
+            } else {
+                // Incorrect guess
+                remainingGuesses--;
+                document.getElementById('message').innerText = "Wrong guess!";
+            }
+
+            // Update remaining guesses
+            document.getElementById('guesses-left').innerText = remainingGuesses;
+
+            // Check game end conditions
+            if (remainingGuesses <= 0) {
+                document.getElementById('message').innerText = `Game Over! The phrase was: ${currentPhrase}`;
+            }
+
+            // Check win condition
+            if (document.getElementById('masked-phrase').innerText.replace(/_/g, '') === currentPhrase.replace(/\s/g, '')) {
+                document.getElementById('message').innerText = "Congratulations! You guessed the phrase!";
+            }
+        }
+
+        // Update Masked Phrase Function
+        function updateMaskedPhrase() {
+            let maskedPhraseElement = document.getElementById('masked-phrase');
+            let newMaskedPhrase = currentPhrase.split('').map(char => 
+                guessedLetters.includes(char.toLowerCase()) ? char : "_"
+            ).join('');
+            maskedPhraseElement.innerText = newMaskedPhrase;
+        }
+
+        // Reset Game Function
+        function resetGame() {
+            console.log("Reset Game Clicked");
+            
+            // Reset all game variables
+            currentPhrase = "";
+            maxGuesses = 0;
+            remainingGuesses = 0;
+            guessedLetters = [];
+
+            // Reset display
+            document.getElementById('score-input').value = '';
+            document.getElementById('guess-input').value = '';
+            document.getElementById('masked-phrase').innerText = "______";
+            document.getElementById('guesses-left').innerText = "0";
+            document.getElementById('message').innerText = "Game reset. Enter max guesses to start.";
+        }
+    </script>
 </body>
 </html>
