@@ -1,61 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f8;
+    line-height: 1.6;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f4f4f8;
-            line-height: 1.6;
-        }
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
 
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
 
-        input, button {
-            margin: 5px 0;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
+input, button {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
 
-        input[type="text"], 
-        input[type="number"] {
-            width: 200px;
-        }
+button {
+    background-color: #4A90E2;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
 
-        button {
-            background-color: #4A90E2;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-left: 5px;
-        }
+button:hover {
+    background-color: #357ABD;
+}
 
-        button:hover {
-            background-color: #357ABD;
-        }
+.game-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+}
 
-        .game-stats {
-            display: flex;
-            justify-content: space-between;
-            margin: 15px 0;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            border: 1px solid #e0e0e0;
-        }
+#masked-phrase {
+    font-size: 24px;
+    letter-spacing: 5px;
+    margin: 20px 0;
+    display: block;
+}
 
-        #message {
-            margin: 10px 0;
-            font-weight: bold;
-            text-align: center;
-        }
+#message {
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 18px;
+}
 
-        .logout-section {
-            margin-top: 20px;
-            text-align: center;
-        }
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#game-section {
+    width: 100%;
+}
