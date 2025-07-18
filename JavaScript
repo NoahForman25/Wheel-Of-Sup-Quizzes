@@ -24,15 +24,16 @@ function initializeGame() {
     
     document.getElementById("masked-phrase").innerText = maskPhrase(currentPhrase);
     document.getElementById("score").innerText = score;
-    document.getElementById("message").innerText = "";
+    document.getElementById("message").innerText = ""; 
 }
 
+// Mask the phrase
 function maskPhrase(phrase) {
     return phrase.replace(/[a-zA-Z]/g, "_");
 }
 
-// Handling guesses
-document.getElementById("guess-button").addEventListener("click", function () {
+// Handle guesses
+function handleGuess() {
     const guessInput = document.getElementById("guess-input");
     const guessedLetter = guessInput.value.toLowerCase().trim();
     guessInput.value = ""; // Clear input after guessing
@@ -58,29 +59,31 @@ document.getElementById("guess-button").addEventListener("click", function () {
     document.getElementById("score").innerText = score;
     document.getElementById("masked-phrase").innerText = getMaskedPhrase();
 
-    // Check for complete phrase guess
+    // Check for complete phrase guessed
     if (isPhraseGuessed()) {
         document.getElementById("message").innerText = "Congratulations! You guessed the phrase!";
     } else {
         document.getElementById("message").innerText = `Guesses left: ${maxGuesses}`; // Show remaining guesses
     }
-});
+}
 
+// Get the masked phrase based on guessed letters
 function getMaskedPhrase() {
     return currentPhrase.split('').map(letter => {
         return guesses.includes(letter.toLowerCase()) ? letter : "_";
     }).join('');
 }
 
+// Check if the entire phrase has been guessed
 function isPhraseGuessed() {
     return currentPhrase.split('').every(letter => guesses.includes(letter.toLowerCase()) || letter === " ");
 }
 
-// Reset game functionality
-document.getElementById("reset-button").addEventListener("click", function() {
-    document.getElementById("score-input").value = "";  // Clear the input field
+// Reset the game
+function resetGame() {
+    document.getElementById("score-input").value = ""; // Clear the input field
     initializeGame(); // Re-initialize the game
-});
+}
 
 // Initialize on load
 initializeGame();
