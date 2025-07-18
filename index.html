@@ -3,38 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Phrase Guessing Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Phrase Guessing Game</title>
 </head>
 <body>
-    <!-- Add this in your HTML file -->
-<input type="number" id="score-input" placeholder="Enter your quiz score" />
-<button onclick="initializeGame()">Start Game</button>
-<input type="text" id="guess-input" placeholder="Enter your guess" />
-<button id="guess-button">Guess</button>
-<button id="reset-button">Reset Game</button>
-<div id="message"></div>
-<div id="masked-phrase"></div>
-<div>Your Score: <span id="score">0</span></div>
-    <div class="container">
-        <h1>Team Phrase Guessing Game</h1>
-        <div id="score-area">
-            <h2>Your Score: <span id="score">0</span></h2>
-        </div>
-        <div id="phrase-area">
-            <h2>Guess the Phrase:</h2>
-            <p id="masked-phrase">____ ______ ____ __ _________.</p>
-        </div>
+    <input id="score-input" type="number" placeholder="Enter quiz score" />
+    <button id="start-game-button">Start Game</button>
 
-        <div id="guess-area">
-            <input type="text" id="guess-input" maxlength="1" placeholder="Guess a letter" />
-            <button id="guess-button">Guess</button>
-        </div>
+    <div>Guess the Phrase: <span id="masked-phrase">____</span></div>
+    <input id="guess-input" type="text" placeholder="Enter your guess" />
+    <button id="guess-button">Guess</button>
 
-        <h3 id="message"></h3>
-        <button id="reset-button">Reset Game</button>
-    </div>
+    <div>Your Score: <span id="score">0</span></div>
+    <div id="message"></div>
 
-    <script src="script.js"></script>
+    <button id="reset-button">Reset Game</button>
+
+    <script src="path/to/your/javascriptfile.js"></script>
 </body>
 </html>
