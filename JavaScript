@@ -1,97 +1,117 @@
-// Current Player Management
-let currentPlayer = null;
-
-// Login Function
-function login() {
-    const nicknameInput = document.getElementById('nickname-input');
-    const nickname = nicknameInput.value.trim();
-
-    // Validate nickname
-    if (nickname.length < 3) {
-        alert('Nickname must be at least 3 characters long');
-        return;
-    }
-
-    // Set current player
-    currentPlayer = {
-        nickname: nickname,
-        score: 0
-    };
-
-    // Update player name on game screen
-    document.getElementById('player-name').textContent = nickname;
-
-    // Switch screens
-    document.getElementById('login-screen').classList.remove('active');
-    document.getElementById('game-screen').classList.add('active');
-}
-
-// Logout Function
-function logout() {
-    // Reset current player
-    currentPlayer = null;
-
-    // Clear nickname input
-    document.getElementById('nickname-input').value = '';
-
-    // Switch screens
-    document.getElementById('game-screen').classList.remove('active');
-    document.getElementById('login-screen').classList.add('active');
-
-    // Reset game state
-    resetGame();
-}
-
-// List of phrases
 const phrases = [
-    "Ian cannot beat an anaconda",
+    "Practice makes perfect",
     "Teamwork makes the dream work",
-    "Coffee fuels our creativity daily",
-    "Together we achieve more success",
-    "The early bird gets the worm"
+    "Success is a journey",
+    "Believe in yourself"
 ];
 
 let currentPhrase = "";
-let score = 0;
 let maxGuesses = 0;
-let guesses = [];
+let remainingGuesses = 0;
+let guessedLetters = [];
 
-// Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Add event listeners after DOM is loaded
-    document.getElementById('start-game-button').addEventListener('click', startGame);
-    document.getElementById('guess-button').addEventListener('click', handleGuess);
-    document.getElementById('reset-button').addEventListener('click', resetGame);
+function login() {
+    const nickname = document.getElementById('nickname').value.trim();
+    if (nickname) {
+        document.getElementById('player-name').textContent = nickname;
+        document.getElementById('game-section').style.display = 'block';
+    } else {
+        alert('Please enter a nickname');
+    }
+}
 
-    // Initialize the game when page loads
-    initializeGame();
-});
+function logout() {
+    document.getElementById('nickname').value = '';
+    document.getElementById('game-section').style.display = 'none';
+    resetGame();
+}
 
-// Start the game with the specified score
 function startGame() {
-    const quizScoreInput = document.getElementById("score-input");
-    const scoreValue = parseInt(quizScoreInput.value, 10);
-
-    if (isNaN(scoreValue) || scoreValue <= 0) {
-        alert("Please enter a valid quiz score!");
+    maxGuesses = parseInt(document.getElementById('max-guesses').value);
+    if (isNaN(maxGuesses) || maxGuesses <= 0) {
+        alert('Please enter a valid number of guesses');
         return;
     }
 
-    maxGuesses = scoreValue;
-    initializeGame();
-}
-
-// Initialize the screen
-function initializeGame() {
-    currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-    score = 0;
-    guesses = [];
+    remainingGuesses = maxGuesses;
+    guessedLetters = [];
     
-    document.getElementById("masked-phrase").innerText = maskPhrase(currentPhrase);
-    document.getElementById("score").innerText = score;
-    document.getElementById("guesses-left").innerText = maxGuesses;
-    document.getElementById("message").innerText = `You have ${maxGuesses} guesses`; 
+    currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+    
+    document.getElementById('masked-phrase').textContent = 
+        currentPhrase.replace(/[a-zA-Z]/g, '_');
+    
+    document.getElementById('guesses-left').textContent = remainingGuesses;
+    document.getElementById('score').textContent = 0;
+    document.getElementById('message').textContent = '';
 }
 
-// Rest of your original game logic remains the same...
-// (handleGuess, maskPhrase, getMaskedPhrase, isPhraseGuessed, etc.)
+function makeGuess() {
+    const guessInput = document.getElementById('guess-input');
+    const guess = guessInput.value.toLowerCase().trim();
+    guessInput.value = '';
+
+    if (!guess) {
+        alert('Please enter a guess');
+        return;
+    }
+
+    if (guessedLetters.includes(guess)) {
+        alert('You already guessed that letter');
+        return;
+    }
+
+    guessedLetters.push(guess);
+
+    if (currentPhrase.toLowerCase().includes(guess)) {
+        // Correct guess
+        updateMaskedPhrase();
+        document.getElementById('message').textContent = 'Correct guess!';
+        document.getElementById('message').style.color = 'green';
+    } else {
+        // Incorrect guess
+        remainingGuesses--;
+        document.getElementById('guesses-left').textContent = remainingGuesses;
+        document.getElementById('message').textContent = 'Wrong guess!';
+        document.getElementById('message').style.color = 'red';
+    }
+
+    // Check win/lose conditions
+    if (remainingGuesses <= 0) {
+        document.getElementById('message').textContent = 
+            `Game Over! The phrase was: ${currentPhrase}`;
+    }
+
+    if (isPhraseGuessed()) {
+        document.getElementById('message').textContent = 'Congratulations! You guessed the phrase!';
+        document.getElementById('message').style.color = 'green';
+    }
+}
+
+function updateMaskedPhrase() {
+    const maskedPhraseElement = document.getElementById('masked-phrase');
+    maskedPhraseElement.textContent = currentPhrase
+        .split('')
+        .map(char => 
+            guessedLetters.includes(char.toLowerCase()) ? char : '_'
+        )
+        .join('');
+}
+
+function isPhraseGuessed() {
+    return currentPhrase
+        .toLowerCase()
+        .split('')
+        .every(char => 
+            guessedLetters.includes(char) || !char.match(/[a-z]/)
+        );
+}
+
+function resetGame() {
+    document.getElementById('max-guesses').value = '';
+    document.getElementById('guess-input').value = '';
+    document.getElementById('masked-phrase').textContent = '______';
+    document.getElementById('guesses-left').textContent = '0';
+    document.getElementById('score').textContent = '0';
+    document.getElementById('message').textContent = '';
+}
