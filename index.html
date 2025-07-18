@@ -13,22 +13,39 @@
             margin: 0;
             background-color: #f0f0f0;
         }
-        .game-container {
+        .screen {
             text-align: center;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
         }
         input, button {
             margin: 10px 0;
             padding: 5px;
         }
+        #login-screen {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div class="game-container">
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
         <h1>Phrase Guessing Game</h1>
+        <input 
+            id="nickname-input" 
+            type="text" 
+            placeholder="Enter your nickname"
+            maxlength="15"
+        >
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <h1>Welcome, <span id="player-name"></span></h1>
         
         <input id="score-input" type="number" placeholder="Enter max guesses">
         <button onclick="startGame()">Start Game</button>
@@ -49,9 +66,53 @@
         <div id="message"></div>
 
         <button onclick="resetGame()">Reset Game</button>
+        <button onclick="logout()">Logout</button>
     </div>
 
     <script>
+        let currentPlayer = null;
+
+        // Login Function
+        function login() {
+            const nicknameInput = document.getElementById('nickname-input');
+            const nickname = nicknameInput.value.trim();
+
+            // Validate nickname
+            if (nickname.length < 3) {
+                alert('Nickname must be at least 3 characters long');
+                return;
+            }
+
+            // Set current player
+            currentPlayer = {
+                nickname: nickname,
+                score: 0
+            };
+
+            // Update player name on game screen
+            document.getElementById('player-name').textContent = nickname;
+
+            // Switch to game screen
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+        }
+
+        // Logout Function
+        function logout() {
+            // Reset current player
+            currentPlayer = null;
+
+            // Clear nickname input
+            document.getElementById('nickname-input').value = '';
+
+            // Switch back to login screen
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
+
+            // Reset game state
+            resetGame();
+        }
+
         // Game Variables
         let phrases = [
             "Teamwork makes the dream work",
@@ -117,6 +178,11 @@
                 // Correct guess
                 updateMaskedPhrase();
                 document.getElementById('message').innerText = "Correct guess!";
+                
+                // Update player score
+                if (currentPlayer) {
+                    currentPlayer.score++;
+                }
             } else {
                 // Incorrect guess
                 remainingGuesses--;
