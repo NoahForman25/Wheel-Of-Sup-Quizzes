@@ -7,10 +7,7 @@ const phrases = [
     "The early bird gets the worm"
 ];
 
-// Select a random phrase
-let currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-
-// Initialize game variables
+let currentPhrase = "";
 let score = 0;
 let maxGuesses = 0;
 let guesses = [];
@@ -19,21 +16,25 @@ let guesses = [];
 function initializeGame() {
     currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
     score = 0;
-    maxGuesses = document.getElementById("score").innerText;
+
+    // Get max guesses from the input field
+    const quizScoreInput = document.getElementById("score-input").value;
+    maxGuesses = parseInt(quizScoreInput, 10) || 0; // Default to 0 if invalid input
     guesses = [];
+    
     document.getElementById("masked-phrase").innerText = maskPhrase(currentPhrase);
     document.getElementById("score").innerText = score;
     document.getElementById("message").innerText = "";
 }
 
 function maskPhrase(phrase) {
-    // Mask the phrase, leaving spaces unmasked
     return phrase.replace(/[a-zA-Z]/g, "_");
 }
 
+// Handling guesses
 document.getElementById("guess-button").addEventListener("click", function () {
     const guessInput = document.getElementById("guess-input");
-    const guessedLetter = guessInput.value.toLowerCase();
+    const guessedLetter = guessInput.value.toLowerCase().trim();
     guessInput.value = ""; // Clear input after guessing
 
     if (guesses.includes(guessedLetter)) {
@@ -49,6 +50,7 @@ document.getElementById("guess-button").addEventListener("click", function () {
         maxGuesses--; // Decrease max guesses
         if (maxGuesses <= 0) {
             document.getElementById("message").innerText = "Game Over! The phrase was: " + currentPhrase;
+            document.getElementById("masked-phrase").innerText = currentPhrase; // Show the phrase
             return;
         }
     }
@@ -59,6 +61,8 @@ document.getElementById("guess-button").addEventListener("click", function () {
     // Check for complete phrase guess
     if (isPhraseGuessed()) {
         document.getElementById("message").innerText = "Congratulations! You guessed the phrase!";
+    } else {
+        document.getElementById("message").innerText = `Guesses left: ${maxGuesses}`; // Show remaining guesses
     }
 });
 
@@ -72,8 +76,11 @@ function isPhraseGuessed() {
     return currentPhrase.split('').every(letter => guesses.includes(letter.toLowerCase()) || letter === " ");
 }
 
-// Reset game
-document.getElementById("reset-button").addEventListener("click", initializeGame);
+// Reset game functionality
+document.getElementById("reset-button").addEventListener("click", function() {
+    document.getElementById("score-input").value = "";  // Clear the input field
+    initializeGame(); // Re-initialize the game
+});
 
 // Initialize on load
 initializeGame();
