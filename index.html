@@ -2,45 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Phrase Guessing Game</title>
+    <title>SoFi Wheel Of Furtune</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <!-- Login Screen -->
-        <div id="login-screen" class="active">
-            <h1>Phrase Guessing Game</h1>
-            <input 
-                id="nickname-input" 
-                type="text" 
-                placeholder="Enter your nickname"
-                maxlength="15"
-            >
+        <h1>Phrase Guessing Game</h1>
+        
+        <div>
+            <input type="text" id="nickname" placeholder="Enter nickname">
             <button onclick="login()">Login</button>
         </div>
 
-        <!-- Game Screen -->
-        <div id="game-screen">
-            <h1>Welcome, <span id="player-name"></span>!</h1>
+        <div id="game-section" style="display: none;">
+            <h2>Welcome, <span id="player-name"></span>!</h2>
             
-            <input id="score-input" type="number" placeholder="Enter max guesses">
-            <button id="start-game-button">Start Game</button>
-
-            <div id="guess-area">
-                <div>Guess the Phrase: <span id="masked-phrase">______</span></div>
-                <input id="guess-input" type="text" placeholder="Enter your guess">
-                <button id="guess-button">Guess</button>
+            <div>
+                <input type="number" id="max-guesses" placeholder="Enter max guesses">
+                <button onclick="startGame()">Start Game</button>
             </div>
 
-            <div class="game-info">
+            <div>
+                Guess the Phrase: <span id="masked-phrase">______</span>
+            </div>
+
+            <div>
+                <input type="text" id="guess-input" placeholder="Enter your guess">
+                <button onclick="makeGuess()">Guess</button>
+            </div>
+
+            <div class="game-stats">
                 <div>Your Score: <span id="score">0</span></div>
                 <div>Guesses Left: <span id="guesses-left">0</span></div>
             </div>
 
             <div id="message"></div>
 
-            <div>
-                <button id="reset-button">Reset Game</button>
+            <div class="button-group">
+                <button onclick="resetGame()">Reset Game</button>
                 <button onclick="logout()">Logout</button>
             </div>
         </div>
