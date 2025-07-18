@@ -64,19 +64,16 @@ function makeGuess() {
     guessedLetters.push(guess);
 
     if (currentPhrase.toLowerCase().includes(guess)) {
-        // Correct guess
         updateMaskedPhrase();
         document.getElementById('message').textContent = 'Correct guess!';
         document.getElementById('message').style.color = 'green';
     } else {
-        // Incorrect guess
         remainingGuesses--;
         document.getElementById('guesses-left').textContent = remainingGuesses;
         document.getElementById('message').textContent = 'Wrong guess!';
         document.getElementById('message').style.color = 'red';
     }
 
-    // Check win/lose conditions
     if (remainingGuesses <= 0) {
         document.getElementById('message').textContent = 
             `Game Over! The phrase was: ${currentPhrase}`;
