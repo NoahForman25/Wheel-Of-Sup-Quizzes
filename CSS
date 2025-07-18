@@ -1,67 +1,89 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f8ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 2px solid #2196f3;
-    border-radius: 10px;
-    background-color: #ffffff;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
-h1 {
-    color: #2196f3;
-}
-
-#login-screen, #game-screen {
-    display: none;
-}
-
-#login-screen.active, #game-screen.active {
-    display: block;
-}
-
-#guess-area {
-    margin: 20px;
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 
 input {
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
     font-size: 16px;
-    margin: 10px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-left: 10px;
-    cursor: pointer;
-    background-color: #2196f3;
+    width: 100%;
+    padding: 12px;
+    background-color: #667eea;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #1976d2;
+    background-color: #764ba2;
+    transform: scale(1.05);
+}
+
+#masked-phrase {
+    font-size: 24px;
+    letter-spacing: 5px;
+    color: #667eea;
+    margin: 20px 0;
 }
 
 #message {
-    margin-top: 20px;
+    margin: 15px 0;
     font-weight: bold;
+    color: #4CAF50;
 }
 
-.game-info {
+.game-stats {
     display: flex;
     justify-content: space-between;
-    margin: 10px 0;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.reset-btn {
+    background-color: #f44336;
+}
+
+.reset-btn:hover {
+    background-color: #d32f2f;
 }
