@@ -1,7 +1,11 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f8ff;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .container {
@@ -11,10 +15,19 @@ body {
     border: 2px solid #2196f3;
     border-radius: 10px;
     background-color: #ffffff;
+    text-align: center;
 }
 
 h1 {
     color: #2196f3;
+}
+
+#login-screen, #game-screen {
+    display: none;
+}
+
+#login-screen.active, #game-screen.active {
+    display: block;
 }
 
 #guess-area {
@@ -24,6 +37,7 @@ h1 {
 input {
     padding: 10px;
     font-size: 16px;
+    margin: 10px;
 }
 
 button {
@@ -31,9 +45,23 @@ button {
     font-size: 16px;
     margin-left: 10px;
     cursor: pointer;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #1976d2;
 }
 
 #message {
     margin-top: 20px;
     font-weight: bold;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
 }
