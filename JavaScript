@@ -12,19 +12,40 @@ let score = 0;
 let maxGuesses = 0;
 let guesses = [];
 
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Add event listeners after DOM is loaded
+    document.getElementById('start-game-button').addEventListener('click', startGame);
+    document.getElementById('guess-button').addEventListener('click', handleGuess);
+    document.getElementById('reset-button').addEventListener('click', resetGame);
+
+    // Initialize the game when page loads
+    initializeGame();
+});
+
+// Start the game with the specified score
+function startGame() {
+    const quizScoreInput = document.getElementById("score-input");
+    const scoreValue = parseInt(quizScoreInput.value, 10);
+
+    if (isNaN(scoreValue) || scoreValue <= 0) {
+        alert("Please enter a valid quiz score!");
+        return;
+    }
+
+    maxGuesses = scoreValue;
+    initializeGame();
+}
+
 // Initialize the screen
 function initializeGame() {
     currentPhrase = phrases[Math.floor(Math.random() * phrases.length)];
     score = 0;
-
-    // Get max guesses from the input field
-    const quizScoreInput = document.getElementById("score-input").value;
-    maxGuesses = parseInt(quizScoreInput, 10) || 0; // Default to 0 if invalid input
     guesses = [];
     
     document.getElementById("masked-phrase").innerText = maskPhrase(currentPhrase);
     document.getElementById("score").innerText = score;
-    document.getElementById("message").innerText = ""; 
+    document.getElementById("message").innerText = `You have ${maxGuesses} guesses`; 
 }
 
 // Mask the phrase
@@ -38,6 +59,11 @@ function handleGuess() {
     const guessedLetter = guessInput.value.toLowerCase().trim();
     guessInput.value = ""; // Clear input after guessing
 
+    if (!guessedLetter) {
+        alert("Please enter a letter!");
+        return;
+    }
+
     if (guesses.includes(guessedLetter)) {
         alert("You already guessed that letter!");
         return;
@@ -49,11 +75,13 @@ function handleGuess() {
         score++; 
     } else {
         maxGuesses--; // Decrease max guesses
-        if (maxGuesses <= 0) {
-            document.getElementById("message").innerText = "Game Over! The phrase was: " + currentPhrase;
-            document.getElementById("masked-phrase").innerText = currentPhrase; // Show the phrase
-            return;
-        }
+    }
+
+    // Check game over condition
+    if (maxGuesses <= 0) {
+        document.getElementById("message").innerText = "Game Over! The phrase was: " + currentPhrase;
+        document.getElementById("masked-phrase").innerText = currentPhrase;
+        return;
     }
 
     document.getElementById("score").innerText = score;
@@ -82,8 +110,6 @@ function isPhraseGuessed() {
 // Reset the game
 function resetGame() {
     document.getElementById("score-input").value = ""; // Clear the input field
+    maxGuesses = 0;
     initializeGame(); // Re-initialize the game
 }
-
-// Initialize on load
-initializeGame();
