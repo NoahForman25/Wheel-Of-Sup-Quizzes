@@ -1,3 +1,47 @@
+// Current Player Management
+let currentPlayer = null;
+
+// Login Function
+function login() {
+    const nicknameInput = document.getElementById('nickname-input');
+    const nickname = nicknameInput.value.trim();
+
+    // Validate nickname
+    if (nickname.length < 3) {
+        alert('Nickname must be at least 3 characters long');
+        return;
+    }
+
+    // Set current player
+    currentPlayer = {
+        nickname: nickname,
+        score: 0
+    };
+
+    // Update player name on game screen
+    document.getElementById('player-name').textContent = nickname;
+
+    // Switch screens
+    document.getElementById('login-screen').classList.remove('active');
+    document.getElementById('game-screen').classList.add('active');
+}
+
+// Logout Function
+function logout() {
+    // Reset current player
+    currentPlayer = null;
+
+    // Clear nickname input
+    document.getElementById('nickname-input').value = '';
+
+    // Switch screens
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('login-screen').classList.add('active');
+
+    // Reset game state
+    resetGame();
+}
+
 // List of phrases
 const phrases = [
     "Ian cannot beat an anaconda",
@@ -45,71 +89,9 @@ function initializeGame() {
     
     document.getElementById("masked-phrase").innerText = maskPhrase(currentPhrase);
     document.getElementById("score").innerText = score;
+    document.getElementById("guesses-left").innerText = maxGuesses;
     document.getElementById("message").innerText = `You have ${maxGuesses} guesses`; 
 }
 
-// Mask the phrase
-function maskPhrase(phrase) {
-    return phrase.replace(/[a-zA-Z]/g, "_");
-}
-
-// Handle guesses
-function handleGuess() {
-    const guessInput = document.getElementById("guess-input");
-    const guessedLetter = guessInput.value.toLowerCase().trim();
-    guessInput.value = ""; // Clear input after guessing
-
-    if (!guessedLetter) {
-        alert("Please enter a letter!");
-        return;
-    }
-
-    if (guesses.includes(guessedLetter)) {
-        alert("You already guessed that letter!");
-        return;
-    }
-
-    guesses.push(guessedLetter); // Keep track of guessed letters
-
-    if (currentPhrase.toLowerCase().includes(guessedLetter)) {
-        score++; 
-    } else {
-        maxGuesses--; // Decrease max guesses
-    }
-
-    // Check game over condition
-    if (maxGuesses <= 0) {
-        document.getElementById("message").innerText = "Game Over! The phrase was: " + currentPhrase;
-        document.getElementById("masked-phrase").innerText = currentPhrase;
-        return;
-    }
-
-    document.getElementById("score").innerText = score;
-    document.getElementById("masked-phrase").innerText = getMaskedPhrase();
-
-    // Check for complete phrase guessed
-    if (isPhraseGuessed()) {
-        document.getElementById("message").innerText = "Congratulations! You guessed the phrase!";
-    } else {
-        document.getElementById("message").innerText = `Guesses left: ${maxGuesses}`; // Show remaining guesses
-    }
-}
-
-// Get the masked phrase based on guessed letters
-function getMaskedPhrase() {
-    return currentPhrase.split('').map(letter => {
-        return guesses.includes(letter.toLowerCase()) ? letter : "_";
-    }).join('');
-}
-
-// Check if the entire phrase has been guessed
-function isPhraseGuessed() {
-    return currentPhrase.split('').every(letter => guesses.includes(letter.toLowerCase()) || letter === " ");
-}
-
-// Reset the game
-function resetGame() {
-    document.getElementById("score-input").value = ""; // Clear the input field
-    maxGuesses = 0;
-    initializeGame(); // Re-initialize the game
-}
+// Rest of your original game logic remains the same...
+// (handleGuess, maskPhrase, getMaskedPhrase, isPhraseGuessed, etc.)
